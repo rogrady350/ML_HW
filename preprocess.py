@@ -50,3 +50,30 @@ def split_data(df, val=0.2, test=0.2, seed=2):
     df_test  = df_shuffled.iloc[n_train + n_val:].copy()
 
     return df_train, df_val, df_test
+
+#KMeans++: spreads initial centroids apart
+def kmeans_plus_plus(X, k, random_state=1):
+    np.random.seed(random_state)
+    n_samples = X.shape[0]
+    centroids = []
+
+    #1 pick first centroid randomly
+    first_idx = np.random.randint(n_samples)
+    centroids.append(X[first_idx])
+
+    #2 compute the remaining k-1 centroids
+    for i in range(1, k):
+        #compute distances for all points from the nearest centroid
+        distances = np.min(
+            [np.linalg.norm(X - centroid, axis=1) ** 2 for centroid in centroids],
+            axis=0
+        )
+
+        #normalize distances to get probabilities
+        probs = distances / distances.sum()
+        
+        #choose the next centroid based on the computed probabilities
+        next_idx = np.random.choice(n_samples, p=probs)
+        centroids.append(X[next_idx])
+
+    return np.array(centroids)
