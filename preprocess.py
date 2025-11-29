@@ -77,3 +77,10 @@ def kmeans_plus_plus(X, k, random_state=1):
         centroids.append(X[next_idx])
 
     return np.array(centroids)
+
+#helper function to compute Gini impurity for a 0/1 churn vector
+def gini(y):
+    counts = y.value_counts()
+    total = counts.sum()
+    probs = counts / total
+    return 1 - np.sum(probs ** 2)
