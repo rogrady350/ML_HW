@@ -80,7 +80,7 @@ def kmeans_plus_plus(X, k, random_state=1):
 
 #helper function to compute Gini impurity for a 0/1 churn vector
 def gini(y):
-    counts = y.value_counts()
-    total = counts.sum()
-    probs = counts / total
-    return 1 - np.sum(probs ** 2)
+    counts = y.value_counts()     #count of churn and non-churn at node
+    total = counts.sum()          #total number of samples at node
+    probs = counts / total        #probability of churning vs not at node
+    return 1 - np.sum(probs ** 2) #1 - (sum of squared proabilitites). gives Gini impurity: chance of misclassifying
